@@ -28,7 +28,7 @@ defmodule Problem002 do
   44
   """
   def sum_even_fibs(a, b, max, accum) do
-    IO.puts "sum_even_fibs(#{a}, #{b}, #{max}, #{accum})"
+    # IO.puts "sum_even_fibs(#{a}, #{b}, #{max}, #{accum})"
     if b >= max do
       accum
     else
