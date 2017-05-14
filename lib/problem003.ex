@@ -40,8 +40,6 @@ defmodule Problem003 do
     find_largest_prime_factor 600851475143
   end
 
-
-
   @doc """
   return the largest prime factor of number
 
