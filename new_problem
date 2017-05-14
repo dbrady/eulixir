@@ -1,0 +1,70 @@
+#!/usr/bin/env ruby
+# new_problem <number> - add a new problem
+unless ARGV[0] && ARGV[0].to_i > 0
+  puts "new_problem <number> - add a new problem"
+  exit 1
+end
+
+number = ARGV[0].to_i
+module_name = "Problem%03d" % number
+problem = "problem%03d" % number
+code_file = "./lib/#{problem}.ex"
+test_file = "./test/#{problem}_test.exs"
+
+[code_file, test_file].each do |filename|
+  if File.exist?(filename)
+    puts "Cowardly refusing to overwrite #{filename}"
+    exit 2
+  end
+end
+
+print "Writing #{code_file}... "
+File.open(code_file, "w") do |file|
+  file.puts <<CODE
+defmodule #{module_name} do
+  @moduledoc """
+  Project Euler, Problem #{number}
+
+  <problem statement here>
+  """
+
+  @doc """
+  Solve problem #{number}.
+  """
+  def solve! do
+  end
+
+  @doc """
+  Sample method to demonstrate doctest boilerplate
+
+  ## Examples:
+
+      iex> #{module_name}.add(2, 3)
+      5
+  """
+  def add(a, b) do
+    a + b
+  end
+end
+CODE
+end
+puts "ok."
+
+print "Writing #{test_file}... "
+File.open(test_file, "w") do |file|
+  file.puts <<TEST
+defmodule #{module_name}Test do
+  use ExUnit.Case
+  doctest #{module_name}
+end
+TEST
+end
+puts "ok."
+
+puts "Adding files to source control..."
+system <<BASH
+mix test &&
+git add #{code_file} &&
+git add #{test_file} &&
+git commit -m 'Add template files for problem #{problem}'
+BASH
