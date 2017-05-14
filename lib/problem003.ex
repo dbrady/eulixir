@@ -53,50 +53,46 @@ defmodule Problem003 do
   the tail of primes immutable. When we finally exhaust our search, hd(primes)
   will contain the last, and largest, prime factor.
 
-  Examples:
+  ## Examples:
 
-  iex> Problem003.find_largest_prime_factor(10)
-  5
+      iex> Problem003.find_largest_prime_factor(10)
+      5
 
-  iex> Problem003.find_largest_prime_factor(17)
-  17
+      iex> Problem003.find_largest_prime_factor(17)
+      17
 
-  iex> Problem003.find_largest_prime_factor(64)
-  2
+      iex> Problem003.find_largest_prime_factor(64)
+      2
+
+  ## Algorithm
+
+      if primes is not empty and hd(primes) >= number, we're done!
+        return hd(primes)
+      otherwise,
+        if number is divisible by any p in primes,
+          # do nothing with primes
+          # number = number / p
+          # recurse
+          find_largest_prime_factor div(number, p), primes
+        else
+          # find next largest prime
+          find_largest_prime_factor number, next_prime(primes)
+        end
+      end
   """
   def find_largest_prime_factor(number, primes \\ []) do
-    # if is_nil(List.first(primes)) do
-    #   IO.puts ""
-    #   IO.puts "--------------------"
-    #   IO.puts "Factoring #{number}..."
-    # else
-    #   IO.puts "Primes: #{inspect(primes)}"
-    # end
-
-    # if primes is not empty and hd(primes) >= number do
-    #   # we're done!
-    #   return hd(primes)
-    # end
-    #
-    # if number is divisible by any p in primes,
-    #   # do nothing with primes
-    #   # number = number / p
-    #   # recurse
-    #   find_largest_prime_factor div(number, p), primes
-    # else
-    #   # find next largest prime
-    #   find_largest_prime_factor number, next_prime(primes)
-    # end
-
-    # vvv there's an idiomatic way to call hd(primes) that doesn't crash when
-    # primes is [] vvv
+    # RESEARCH: there's an idiomatic way to call hd(primes) that doesn't crash
+    # when primes is []. The "real problem" here is I want to check hd(primes),
+    # and return it if it is present and >= number. There are no doubt several
+    # idioms here I could use.
     if !is_nil(List.first(primes)) && hd(primes) >= number do
-      # IO.puts "Done! Returning #{hd(primes)}"
       hd(primes)
     else
+      # Is this number divisible by any p in primes?
       case Enum.find(primes, fn(p) -> rem(number,p) == 0 end) do
+        # no; we're gonna need a bigger prime  ~~~~/\~~~~~~~~~\o/~~~~
         nil -> find_largest_prime_factor number, next_prime(primes)
-        # p -> IO.puts("/#{p}") && find_largest_prime_factor div(number, p), primes
+        # yes; whittle it down and repeat
         p -> find_largest_prime_factor div(number, p), primes
       end
     end
