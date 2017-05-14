@@ -103,23 +103,27 @@ defmodule Problem003 do
   end
 
   @doc """
-  Examples:
+  Given a list of primes, return the list with the next highest prime added. If
+  the list is missing or empty, returns 2
 
-  iex> Problem003.next_prime([])
-  [2]
+  ## Examples:
 
-  iex> Problem003.next_prime([5,3,2])
-  [7,5,3,2]
+      iex> Problem003.next_prime([5, 3, 2])
+      [7, 5, 3, 2]
 
-  iex> Problem003.next_prime([7,5,3,2])
-  [11,7,5,3,2]
+      iex> Problem003.next_prime([])
+      [2]
+
+      iex> Problem003.next_prime()
+      [2]
+
+      iex> Problem003.next_prime([7, 5, 3, 2])
+      [11, 7, 5, 3, 2]
   """
+  def next_prime, do: [2]
   def next_prime([]), do: [2]
-
-  def next_prime([2]), do: [3,2]
-
+  def next_prime([2]), do: [3, 2]
   def next_prime(primes), do: next_prime(primes, hd(primes)+2)
-
   def next_prime(primes, candidate) do
     if Enum.any?(primes, fn(p) -> rem(candidate, p) == 0 end) do
       # not prime; next candidate
