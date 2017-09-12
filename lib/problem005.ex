@@ -83,24 +83,10 @@ defmodule Problem005 do
   64
   """
   def perfect_power_under(base, bound) do
-    power = exponent_of_perfect_power_under(base, bound)
-    :math.pow(base, power) |> round
-  end
-
-  @doc """
-  Return exponent of perfect power under a bound.
-
-  Examples:
-
-  iex> Problem005.exponent_of_perfect_power_under(2, 20)
-  4
-
-  iex> Problem005.exponent_of_perfect_power_under(5, 200)
-  3
-  """
-  def exponent_of_perfect_power_under(base, bound) do
     :math.log(bound) / :math.log(base)
     |> Float.floor
+    |> round
+    |> (&(:math.pow(base, &1))).() # pipe into 2nd arg
     |> round
   end
 
