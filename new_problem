@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # new_problem <number> - add a new problem
-unless ARGV[0] && ARGV[0].to_i > 0
+unless ARGV.size == 1 && ARGV[0].to_i > 0
   puts "new_problem <number> - add a new problem"
   exit 1
 end
